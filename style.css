@@ -1,0 +1,889 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #74ebd5; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #acb6e5,
+    #74ebd5
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #acb6e5, #74ebd5);
+  height: 100vh;
+}
+/* حاوية الأيقونات: شفافة وتغطي الشاشة بالكامل */
+.icons-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* لكي لا تمنع الضغط على الأزرار والمحتوى */
+  z-index: 0; /* فوق الخلفية وتحت المحتوى */
+  overflow: hidden;
+}
+
+/* تنسيق الأيقونة الواحدة */
+.floating-icon {
+  position: absolute;
+  bottom: -100px;
+  color: rgba(255, 255, 255, 0.3); /* لون أبيض شفاف جداً ليبدو احترافياً */
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  user-select: none;
+  animation: moveUp linear infinite;
+}
+
+/* حركة الصعود والدوران */
+@keyframes moveUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+.floating-icon:nth-child(1) {
+  left: 5%;
+  animation-duration: 20s;
+  animation-delay: 0s;
+  font-size: 30px;
+}
+.floating-icon:nth-child(2) {
+  left: 15%;
+  animation-duration: 25s;
+  animation-delay: 2s;
+  font-size: 20px;
+}
+.floating-icon:nth-child(3) {
+  left: 25%;
+  animation-duration: 18s;
+  animation-delay: 4s;
+  font-size: 40px;
+}
+.floating-icon:nth-child(4) {
+  left: 40%;
+  animation-duration: 22s;
+  animation-delay: 1s;
+  font-size: 25px;
+}
+.floating-icon:nth-child(5) {
+  left: 55%;
+  animation-duration: 28s;
+  animation-delay: 5s;
+  font-size: 35px;
+}
+.floating-icon:nth-child(6) {
+  left: 65%;
+  animation-duration: 15s;
+  animation-delay: 3s;
+  font-size: 22px;
+}
+.floating-icon:nth-child(7) {
+  left: 75%;
+  animation-duration: 24s;
+  animation-delay: 7s;
+  font-size: 45px;
+}
+.floating-icon:nth-child(8) {
+  left: 85%;
+  animation-duration: 19s;
+  animation-delay: 0s;
+  font-size: 28px;
+}
+.floating-icon:nth-child(9) {
+  left: 92%;
+  animation-duration: 26s;
+  animation-delay: 2s;
+  font-size: 32px;
+}
+.floating-icon:nth-child(10) {
+  left: 10%;
+  animation-duration: 21s;
+  animation-delay: 6s;
+  font-size: 38px;
+}
+#app {
+  width: 100%;
+  height: 100vh;
+}
+/* تنسيق نظام التنقل SPA */
+#hero-page {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+}
+#details-page {
+  display: none;
+  height: 100vh;
+}
+/* تنسيق المحتوى داخل الـ Hero */
+.hero-content {
+  text-align: center;
+  color: #ffffff;
+}
+
+.logo-placeholder {
+  width: 450px;
+  height: auto;
+  margin-bottom: 25px;
+}
+
+.company-name {
+  font-size: 5.5rem;
+  margin-bottom: 30px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.cta-button:hover {
+  transform: scale(1.05);
+  background-color: #ff7654;
+}
+
+/* تنسيق زر الرجوع */
+.back-button {
+  opacity: 0;
+  position: absolute;
+}
+/* 1. أنيميشن الشعار (دخول من اليمين) */
+.animate-right {
+  opacity: 0;
+  transform: translateX(100px); /* يبدأ من اليمين بـ 100 بكسل */
+  animation: slideIn 1s ease-out forwards;
+  animation-delay: 0.2s; /* تأخير بسيط ليبدأ بعد تحميل الصفحة */
+}
+
+/* 2. أنيميشن النص (دخول من الشمال) */
+.animate-left {
+  opacity: 0;
+  transform: translateX(-100px); /* يبدأ من الشمال بـ 100 بكسل */
+  animation: slideIn 1s ease-out forwards;
+  animation-delay: 0.5s; /* يبدأ بعد الشعار بقليل */
+}
+
+/* 3. أنيميشن الزر (ظهور من الأسفل) */
+.animate-bottom {
+  opacity: 0;
+  transform: translateY(30px); /* يبدأ من الأسفل */
+  animation: slideIn 1s ease-out forwards;
+  animation-delay: 0.8s; /* آخر عنصر يظهر */
+}
+
+/* قاعدة الأنيميشن المشتركة */
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0); /* يعود لمكانه الطبيعي */
+  }
+}
+.company-name {
+  background: linear-gradient(to right, #fff 20%, #b2b1e3 50%, #fff 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation:
+    shine 3s linear infinite,
+    slideIn 1s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+.cta-button {
+  position: relative;
+  background: linear-gradient(
+    45deg,
+    #ff8e72,
+    #ff6b6b
+  ); /* تدرج مرجاني احترافي */
+  color: white;
+  border: none;
+  margin-top: 30px;
+  padding: 18px 45px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* حركة ناعمة جداً */
+
+  /* شادو احترافي (طبقتين لإعطاء عمق) */
+  box-shadow:
+    0 10px 20px rgba(255, 142, 114, 0.3),
+    0 6px 6px rgba(0, 0, 0, 0.1);
+
+  /* أنيميشن الدخول من الأسفل الذي طلبته سابقاً */
+  opacity: 0;
+  transform: translateY(30px);
+  animation:
+    slideIn 1s ease-out forwards,
+    pulse 2.5s infinite;
+  animation-delay: 0.8s;
+}
+.cta-button:hover {
+  transform: translateY(-5px) scale(1.03); /* يرتفع للأعلى قليلاً */
+  box-shadow:
+    0 15px 25px rgba(255, 142, 114, 0.5),
+    0 10px 10px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(45deg, #ff9e85, #ff7b7b);
+}
+
+/* تأثير عند الضغط (Active) */
+.cta-button:active {
+  transform: translateY(-2px) scale(0.98);
+  box-shadow: 0 5px 10px rgba(255, 142, 114, 0.4);
+}
+
+/* إضافة لمعة بريق متحركة داخل الزر (Reflection Effect) */
+.cta-button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 20%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: rotate(30deg);
+  transition: all 0.6s;
+  opacity: 0;
+}
+
+.cta-button:hover::after {
+  left: 120%;
+  opacity: 1;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 10px 20px rgba(255, 142, 114, 0.3);
+  }
+  50% {
+    box-shadow: 0 10px 30px rgba(255, 142, 114, 0.6);
+  }
+  100% {
+    box-shadow: 0 10px 20px rgba(255, 142, 114, 0.3);
+  }
+}
+.mainsocial {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 0 30px;
+  flex-wrap: wrap;
+  background-color: #0000006e;
+  margin-top: 3px;
+}
+.social {
+  display: flex;
+  gap: 20px;
+}
+.mainsocial img {
+  width: 60px;
+}
+/* قاعدة الأنيميشن الأساسية للدخول (تأكد من وجودها) */
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media screen and (max-width: 800px) {
+  .company-name {
+    font-size: 4rem;
+  }
+}
+@media screen and (max-width: 560px) {
+  .company-name {
+    font-size: 3rem;
+  }
+}
+@media screen and (max-width: 440px) {
+  .company-name {
+    font-size: 2.5rem;
+  }
+  .logo-placeholder {
+    width: 320px;
+  }
+}
+.menu {
+  width: fit-content;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.253); /* شفافية بسيطة */
+  backdrop-filter: blur(10px); /* تأثير الزجاج الضبابي */
+  position: sticky;
+  top: 25px;
+  display: flex;
+  justify-content: center;
+  border-radius: 50px;
+  box-shadow: 0 10px 25px 0 rgba(#000, 0.075);
+  background-size: 0%;
+  padding-left: 20px;
+  animation-duration: 3s;
+  animation-name: menu;
+  margin: auto;
+  z-index: 1;
+}
+@keyframes menu {
+  0% {
+    opacity: 0;
+  }
+}
+.link {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 50px;
+  border-radius: 20px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  transform-origin: center left;
+  transition: width 0.2s ease-in;
+  text-decoration: none;
+  color: inherit;
+  &:before {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    display: block;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    transform: translateX(100%);
+    transition: transform 0.2s ease-in;
+    transform-origin: center right;
+    background-color: #eee;
+  }
+
+  &:hover,
+  &:focus {
+    outline: 0;
+    width: 130px;
+
+    &:before,
+    .link-title {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+}
+
+.link-icon {
+  width: 28px;
+  height: 28px;
+  display: block;
+  flex-shrink: 0;
+  left: 18px;
+  position: absolute;
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.link-title {
+  transform: translateX(100%);
+  transition: transform 0.2s ease-in;
+  transform-origin: center right;
+  display: block;
+  text-align: center;
+  text-indent: 28px;
+  width: 100%;
+}
+.modern-footer {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.062); /* شفافية بسيطة */
+  backdrop-filter: blur(10px); /* تأثير الزجاج الضبابي */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  bottom: 0;
+  margin-top: auto; /* لضمان نزوله للأسفل لو المحتوى قليل */
+  padding-top: 20px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 30px;
+  padding-left: 0;
+  flex-wrap: wrap;
+}
+.footertitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+  margin-bottom: 30px;
+}
+.footertitle span {
+  padding-bottom: 2px;
+  border-bottom: solid black 2px;
+}
+.footertitle div {
+  padding: 10px;
+}
+.footertitle div:hover {
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+.footer-logo {
+  width: 100px;
+  object-fit: contain;
+}
+
+.footer-company-name {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 20px;
+}
+
+.footer-company-name small {
+  display: block;
+  font-size: 1.5rem;
+  color: black;
+  font-weight: normal;
+}
+.footer-socials {
+  display: flex;
+  gap: 50px;
+}
+.footer-socials img {
+  width: 50px;
+}
+.social-icon {
+  width: 30px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.social-icon:hover {
+  transform: translateY(-5px);
+  background: #ff6b6b; /* لون الزر الاحترافي اللي عملناه */
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.footer-bottom-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  margin-top: 15px;
+}
+
+@media (max-width: 500px) {
+  .link {
+    width: 70px;
+  }
+}
+.advantges {
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 150px;
+  gap: 40px;
+  margin-bottom: 100px;
+}
+.cardsad {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  margin: 0 10px;
+  visibility: hidden;
+}
+.cardsad div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.253); /* شفافية بسيطة */
+  padding: 70px 0;
+  border-radius: 20px;
+  transition: 0.5s;
+  width: 100%;
+  height: 250px;
+}
+@keyframes cardsad {
+  0% {
+    margin-top: 40px;
+    opacity: 0;
+  }
+}
+.cardsad div img {
+  width: 100px;
+}
+.advantges h1 {
+  background: linear-gradient(to right, #fff 20%, #b2b1e3 50%, #fff 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #000;
+  font-size: 3.5rem;
+  transition: 0.5s;
+  visibility: hidden;
+}
+@keyframes adan {
+  0% {
+    opacity: 0;
+  }
+}
+.cardsad span {
+  animation-delay: 0.5s;
+  margin-top: 20px;
+  padding: 0 10px;
+  font-size: 20px;
+  color: white;
+  direction: rtl;
+  font-family:
+    "cairo", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+@media screen and (max-width: 1150px) {
+  .cardsad div img {
+    width: 80px;
+  }
+  .cardsad span {
+    font-size: 18px;
+  }
+  .cardsad div {
+    height: 220px;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .cardsad div img {
+    width: 75px;
+  }
+  .cardsad span {
+    font-size: 15px;
+  }
+  .cardsad div {
+    height: 220px;
+  }
+}
+@media screen and (max-width: 925px) {
+  .cardsad {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .cardsad div {
+    width: 70%;
+    height: 180px;
+  }
+}
+.project {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 80px;
+  margin-top: 150px;
+}
+.project h1 {
+  background: linear-gradient(to right, #fff 20%, #b2b1e3 50%, #fff 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #000;
+  font-size: 3.5rem;
+  transition: 0.5s;
+  visibility: hidden;
+}
+.cardspro {
+  padding: 0 30px;
+  display: flex;
+  gap: 50px;
+  flex-wrap: wrap;
+  justify-content: center;
+  visibility: hidden;
+}
+.cardspro div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.253); /* شفافية بسيطة */
+  border-radius: 50%;
+  gap: 10px;
+  padding: 70px 20px;
+  box-shadow: #b2b1e3d7 10px 15px 25px 0;
+  transition: 0.5s;
+}
+.cardspro div:hover {
+  transform: translateY(-10px);
+}
+.cardspro div img {
+  width: 150px;
+}
+.cardspro div a {
+  text-decoration: none;
+  color: beige;
+  font-size: 30px;
+}
+.about {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 150px;
+}
+.about h1 {
+  background: linear-gradient(to right, #fff 20%, #b2b1e3 50%, #fff 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #000;
+  font-size: 3.5rem;
+  transition: 0.5s;
+  visibility: hidden;
+}
+.aboutdiv {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.aboutdiv img {
+  width: 450px;
+  margin-bottom: 50px;
+  margin-right: 120px;
+  animation: aboutimg 2s forwards;
+  transform: 0.5s;
+  visibility: hidden;
+}
+@keyframes aboutimg {
+  0% {
+    transform: translateX(-25px);
+    opacity: 0;
+  }
+}
+.about p {
+  padding: 20px;
+  font-size: 28px;
+  direction: rtl;
+  background: rgba(255, 255, 255, 0.253); /* شفافية بسيطة */
+  border-radius: 20px;
+  width: 430px;
+  box-shadow: 10px 15px 25px rgba(93, 176, 197, 0.726);
+  transition: 0.5s;
+  visibility: hidden;
+  height: 320px;
+  margin-top: 80px;
+}
+@keyframes abouttitle {
+  0% {
+    transform: translateX(25px);
+    opacity: 0;
+  }
+}
+@media screen and (max-width: 1125px) {
+  .about p {
+    height: 280px;
+    width: 370px;
+    font-size: 23px;
+    margin-top: 60px;
+    margin-right: 30px;
+  }
+  .aboutdiv img {
+    width: 385px;
+  }
+}
+@media screen and (max-width: 950px) {
+  .about p {
+    height: 250px;
+    width: 330px;
+    font-size: 20px;
+    margin-top: 50px;
+    margin-right: 50px;
+  }
+  .aboutdiv img {
+    width: 350px;
+  }
+}
+@media screen and (max-width: 850px) {
+  .about p {
+    height: 190px;
+    width: 270px;
+    font-size: 17px;
+    margin-top: 45px;
+    margin-right: 30px;
+  }
+  .aboutdiv img {
+    width: 300px;
+  }
+}
+@media screen and (max-width: 750px) {
+  .about p {
+    height: 230px;
+    width: 305px;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-right: 0px;
+  }
+  .aboutdiv img {
+    display: none;
+  }
+  .aboutdiv {
+    justify-content: center;
+  }
+}
+.services {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 100px;
+  gap: 70px;
+}
+.services h1 {
+  font-size: 40px;
+  color: #fbfff8;
+  animation: sertitle 3s forwards;
+  transition: 0.5s;
+}
+@keyframes sertitle {
+  0% {
+    opacity: 0%;
+  }
+}
+.cardservice {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  padding: 0 20px;
+}
+.cardservice div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: rgba(97, 96, 96, 0.205);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px solid rgba(83, 83, 83, 0.411);
+  box-shadow: 10px 15px 25px rgba(232, 245, 207, 0.596);
+  height: 180px;
+  width: 180px;
+  animation: service 2s forwards;
+  transition: 0.5;
+}
+@keyframes service {
+  0% {
+    opacity: 0%;
+    transform: translateY(30px);
+  }
+}
+.cardservice img {
+  width: 150px;
+}
+.img1 {
+  width: 130px !important;
+}
+.cardservice h3 {
+  color: #fbfff8;
+}
+@media screen and (max-width: 1000px) {
+  .cardservice div {
+    width: 150px;
+    height: 150px;
+  }
+  .cardservice img {
+    width: 120px;
+  }
+  .img1 {
+    width: 110px !important;
+  }
+}
+@media screen and (max-width: 850px) {
+  .cardservice div {
+    width: 120px;
+    height: 130px;
+  }
+  .cardservice img {
+    width: 100px;
+  }
+  .img1 {
+    width: 90px !important;
+  }
+  .cardservice {
+    gap: 70px;
+  }
+}
+@media screen and (max-width: 680px) {
+  .cardservice div {
+    width: 100px;
+    height: 110px;
+  }
+  .cardservice img {
+    width: 80px;
+  }
+  .img1 {
+    width: 70px !important;
+  }
+  .cardservice {
+    gap: 50px;
+  }
+  .cardservice h3 {
+    font-size: 15px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .cardservice div {
+    width: 150px;
+    height: 150px;
+  }
+  .cardservice img {
+    width: 100px;
+  }
+  .img1 {
+    width: 90px !important;
+  }
+  .cardservice {
+    gap: 50px;
+    flex-direction: column;
+  }
+  .cardservice h3 {
+    font-size: 20px;
+  }
+  .services h1 {
+    font-size: 60px;
+  }
+}
